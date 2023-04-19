@@ -1,0 +1,91 @@
+
+
+<div class="container">
+  <h2>Directiva *ngFor - Todos los alumnos </h2>
+ <ul class="list-group">
+   <li class="list-group list-group-flush " *ngFor="let alum of alumnos; index as i">
+    {{i + 1}}. {{alum.nombre}} {{alum.apellidos}} ✓
+   </li>
+ </ul>
+
+
+ <h2>Directiva *ngIf - solo los no repetidores</h2>
+ <ng-container *ngFor = "let alum of alumnos">
+  <li *ngIf="!alum.repetidor">
+      {{alum.nombre}} {{alum.apellidos}} : {{alum.nota}}
+  </li>
+ </ng-container>
+
+ <table class="table">
+  <thead>
+    <th>nombre</th>
+    <th>apellido</th>
+    <th>nota</th>
+  </thead>
+  <tbody *ngFor="let alum of alumnos">
+    <tr [ngStyle]="{'background-color': alum.repetidor === false || alum.nota < 5?  'green' : 'red'}">
+    <td>{{alum.nombre}}</td>
+    <td>{{alum.apellidos}}</td>
+    <td>{{alum.nota}}</td>
+    </tr>
+  </tbody>
+ </table>
+
+
+</div>
+<h2>mustra los alumnos aprobados</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>valoracion</th>
+    <th>Nota</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let alum of alumnos">
+    <tr [ngClass]="{'bg-warning':alum.repetidor === false, 'bg-danger': alum.repetidor === true}">
+    <td>{{alum.nombre}} </td>
+    <td>{{alum.apellidos}} </td>
+    <td>{{alum.valoracion}}</td>
+    <td> {{alum.nota}}</td>
+    </tr>
+  </tbody>
+
+  <h3>muestra repetidores que esten suspensos</h3>
+  <ul class="list-group list-group-flush">
+    <ng-container *ngFor="let alum of alumnos ,  index as i">
+     <li [ngClass]="{'bg-success': alum.repetidor === false , 'bg-warning': alum.nota < 6, 'bg-danger': alum.repetidor === true || alum.nota <5}">
+      {{i+1}}. {{alum.nombre}} {{alum.apellidos}} {{alum.nota}}
+     </li>
+    </ng-container>
+
+  </ul>
+</table>
+
+
+<h3>Directiva ngStyle - verde aprobado y rojo suspensos</h3>
+<ul class="list-group list-group-flush">
+  <ng-container *ngFor="let alum of alumnos,index as i">
+    <li [ngStyle]="{'color': alum.nota >= 5? 'green' : 'red'}">
+     {{i+1}} {{alum.nombre}} {{alum.apellidos}}
+    </li>
+  </ng-container>
+</ul>
+
+<h3>Directiva ngSwitch - y ngSwitchCase - resaltar</h3>
+<ol class="list-group list-group-numbered">
+  <ng-container *ngFor="let alum of alumnos">
+  <li class="list-group-item"  [ngSwitch]="alum.valoracion">
+    <div *ngSwitchCase="'alta'" [ngStyle]="{'background-color': 'green'}">
+      {{alum.nombre}} {{alum.apellidos}} {{alum.nota}}
+    </div>
+    <div *ngSwitchCase="'media'" [ngStyle]="{'background-color': 'yellow'}">
+      {{alum.nombre}} {{alum.apellidos}} {{alum.nota}}
+    </div>
+    <div *ngSwitchCase="'baja'" [ngStyle]="{'background-color': 'red'}">
+      {{alum.nombre}} {{alum.apellidos}} {{alum.nota}}
+    </div>
+  </li>
+  </ng-container>
+</ol>
